@@ -40,6 +40,14 @@ public class AppRunner {
 
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
         allowProducts.addAll(getAllowedProducts().toArray());
+        if (allowProducts.size() == 0 && coinAcceptor.getAmount() == 0){
+            isExit = true;
+            System.out.println("""
+                    У вас не осталось монет...
+                    Приходите когда будет еще!""");
+            return;
+        }
+
         chooseAction(allowProducts);
 
     }
