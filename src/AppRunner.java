@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class AppRunner {
 
     private final UniversalArray<Product> products = new UniversalArrayImpl<>();
-
     private final MoneyReceiver moneyReceiver;
 
     private static boolean isExit = false;
@@ -24,7 +23,7 @@ public class AppRunner {
         });
     }
 
-    public static void run(MoneyReceiver moneyReceiver) { // Принимаем MoneyReceiver в качестве параметра
+    public static void run(MoneyReceiver moneyReceiver) {
         AppRunner app = new AppRunner(moneyReceiver);
         while (!isExit) {
             app.startSimulation();
@@ -35,20 +34,19 @@ public class AppRunner {
         print("В автомате доступны:");
         showProducts(products);
 
-        print("Монет на сумму: " + moneyReceiver.getAmount());
+        print("Сумма в кошельке: " + moneyReceiver.getAmount());
 
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
         allowProducts.addAll(getAllowedProducts().toArray());
-        if (allowProducts.size() == 0 && moneyReceiver.getAmount() == 0){
+        if (allowProducts.size() == 0 && moneyReceiver.getAmount() == 0) {
             isExit = true;
             System.out.println("""
-                    У вас не осталось монет...
-                    Приходите когда будет еще!""");
+                    У вас не осталось денег...
+                    Приходите когда будете готовы!""");
             return;
         }
 
         chooseAction(allowProducts);
-
     }
 
     private UniversalArray<Product> getAllowedProducts() {
@@ -77,7 +75,7 @@ public class AppRunner {
                 }
             }
         } catch (IllegalArgumentException e) {
-            print("Недопустимая буква. Попрбуйте еще раз.");
+            print("Недопустимая буква. Попробуйте еще раз.");
             chooseAction(products);
         }
     }
@@ -100,5 +98,28 @@ public class AppRunner {
 
     private void print(String msg) {
         System.out.println(msg);
+    }
+
+    public static MoneyReceiver choosePaymentMethod() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("Выберите способ оплаты:");
+            System.out.println("1. Монетоприемник");
+            System.out.println("2. Карта");
+            System.out.print("Ваш выбор: ");
+            String choice = scanner.nextLine();
+            switch (choice) {
+                case "1":
+                    return new CoinAcceptor(100);
+                case "2":
+                    System.out.print("Введите номер карты: ");
+                    String cardNumber = scanner.nextLine();
+                    System.out.print("Введите PIN-код: ");
+                    String pin = scanner.nextLine();
+                    return new Card(cardNumber, pin, 400);
+                default:
+                    System.out.println("Неверный выбор. Попробуйте еще раз.");
+            }
+        }
     }
 }
