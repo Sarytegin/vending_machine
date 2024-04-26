@@ -66,7 +66,7 @@ public class AppRunner {
         try {
             for (int i = 0; i < products.size(); i++) {
                 if (products.get(i).getActionLetter().equals(ActionLetter.valueOf(action.toUpperCase()))) {
-                    moneyReceiver.acceptMoney(products.get(i).getPrice());
+                    moneyReceiver.acceptMoney(-products.get(i).getPrice());
                     print("Вы купили " + products.get(i).getName());
                     break;
                 } else if ("h".equalsIgnoreCase(action)) {
@@ -116,7 +116,7 @@ public class AppRunner {
                     String cardNumber = scanner.nextLine();
                     System.out.print("Введите PIN-код: ");
                     String pin = scanner.nextLine();
-                    return new Card(cardNumber, pin, 400);
+                    return new Card(cardNumber, pin, 250);
                 default:
                     System.out.println("Неверный выбор. Попробуйте еще раз.");
             }
