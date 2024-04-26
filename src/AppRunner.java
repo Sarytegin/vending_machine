@@ -38,7 +38,7 @@ public class AppRunner {
 
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
         allowProducts.addAll(getAllowedProducts().toArray());
-        if (allowProducts.size() == 0 && moneyReceiver.getAmount() == 0) {
+        if (allowProducts.size() == 0 || moneyReceiver.getAmount() == 0) {
             isExit = true;
             System.out.println("""
                     У вас не осталось денег...
